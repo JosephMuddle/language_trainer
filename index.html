@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Production Trainer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Language Production Trainer</h1>
+            <p class="subtitle">Practice active translation to build fluency</p>
+        </header>
+
+        <!-- Setup Screen -->
+        <section id="setup-screen" class="screen active">
+            <h2>Setup Your Practice</h2>
+
+            <div class="form-group">
+                <label for="native-lang">Your Native Language:</label>
+                <select id="native-lang">
+                    <optgroup label="Common Languages">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="zh">Chinese (Simplified)</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="ru">Russian</option>
+                        <option value="ar">Arabic</option>
+                    </optgroup>
+                    <optgroup label="European Languages">
+                        <option value="nl">Dutch</option>
+                        <option value="pl">Polish</option>
+                        <option value="sv">Swedish</option>
+                        <option value="da">Danish</option>
+                        <option value="no">Norwegian</option>
+                        <option value="fi">Finnish</option>
+                        <option value="el">Greek</option>
+                        <option value="cs">Czech</option>
+                        <option value="hu">Hungarian</option>
+                        <option value="ro">Romanian</option>
+                        <option value="sk">Slovak</option>
+                        <option value="bg">Bulgarian</option>
+                        <option value="hr">Croatian</option>
+                        <option value="sl">Slovenian</option>
+                        <option value="et">Estonian</option>
+                        <option value="lv">Latvian</option>
+                        <option value="lt">Lithuanian</option>
+                        <option value="uk">Ukrainian</option>
+                        <option value="sr">Serbian</option>
+                        <option value="ca">Catalan</option>
+                        <option value="gl">Galician</option>
+                        <option value="eu">Basque</option>
+                        <option value="is">Icelandic</option>
+                        <option value="ga">Irish</option>
+                        <option value="cy">Welsh</option>
+                        <option value="mt">Maltese</option>
+                        <option value="sq">Albanian</option>
+                        <option value="mk">Macedonian</option>
+                        <option value="bs">Bosnian</option>
+                    </optgroup>
+                    <optgroup label="Asian Languages">
+                        <option value="hi">Hindi</option>
+                        <option value="bn">Bengali</option>
+                        <option value="th">Thai</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="id">Indonesian</option>
+                        <option value="ms">Malay</option>
+                        <option value="tl">Filipino (Tagalog)</option>
+                        <option value="ta">Tamil</option>
+                        <option value="te">Telugu</option>
+                        <option value="mr">Marathi</option>
+                        <option value="ur">Urdu</option>
+                    </optgroup>
+                    <optgroup label="Middle Eastern Languages">
+                        <option value="tr">Turkish</option>
+                        <option value="he">Hebrew</option>
+                        <option value="fa">Persian (Farsi)</option>
+                    </optgroup>
+                    <optgroup label="African Languages">
+                        <option value="af">Afrikaans</option>
+                        <option value="sw">Swahili</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="target-lang">Language You're Learning:</label>
+                <select id="target-lang">
+                    <optgroup label="Common Languages">
+                        <option value="es" selected>Spanish</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="zh">Chinese (Simplified)</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="ru">Russian</option>
+                        <option value="ar">Arabic</option>
+                    </optgroup>
+                    <optgroup label="European Languages">
+                        <option value="nl">Dutch</option>
+                        <option value="pl">Polish</option>
+                        <option value="sv">Swedish</option>
+                        <option value="da">Danish</option>
+                        <option value="no">Norwegian</option>
+                        <option value="fi">Finnish</option>
+                        <option value="el">Greek</option>
+                        <option value="cs">Czech</option>
+                        <option value="hu">Hungarian</option>
+                        <option value="ro">Romanian</option>
+                        <option value="sk">Slovak</option>
+                        <option value="bg">Bulgarian</option>
+                        <option value="hr">Croatian</option>
+                        <option value="sl">Slovenian</option>
+                        <option value="et">Estonian</option>
+                        <option value="lv">Latvian</option>
+                        <option value="lt">Lithuanian</option>
+                        <option value="uk">Ukrainian</option>
+                        <option value="sr">Serbian</option>
+                        <option value="ca">Catalan</option>
+                        <option value="gl">Galician</option>
+                        <option value="eu">Basque</option>
+                        <option value="is">Icelandic</option>
+                        <option value="ga">Irish</option>
+                        <option value="cy">Welsh</option>
+                        <option value="mt">Maltese</option>
+                        <option value="sq">Albanian</option>
+                        <option value="mk">Macedonian</option>
+                        <option value="bs">Bosnian</option>
+                    </optgroup>
+                    <optgroup label="Asian Languages">
+                        <option value="hi">Hindi</option>
+                        <option value="bn">Bengali</option>
+                        <option value="th">Thai</option>
+                        <option value="vi">Vietnamese</option>
+                        <option value="id">Indonesian</option>
+                        <option value="ms">Malay</option>
+                        <option value="tl">Filipino (Tagalog)</option>
+                        <option value="ta">Tamil</option>
+                        <option value="te">Telugu</option>
+                        <option value="mr">Marathi</option>
+                        <option value="ur">Urdu</option>
+                    </optgroup>
+                    <optgroup label="Middle Eastern Languages">
+                        <option value="tr">Turkish</option>
+                        <option value="he">Hebrew</option>
+                        <option value="fa">Persian (Farsi)</option>
+                    </optgroup>
+                    <optgroup label="African Languages">
+                        <option value="af">Afrikaans</option>
+                        <option value="sw">Swahili</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="level">Estimate Your Current Level:</label>
+                <select id="level">
+                    <option value="A1">A1 - Beginner</option>
+                    <option value="A2">A2 - Elementary</option>
+                    <option value="B1" selected>B1 - Intermediate</option>
+                    <option value="B2">B2 - Upper Intermediate</option>
+                    <option value="C1">C1 - Advanced</option>
+                    <option value="C2">C2 - Proficient</option>
+                </select>
+            </div>
+
+            <div class="level-description">
+                <h3>Level Guide:</h3>
+                <ul>
+                    <li><strong>A1:</strong> Basic phrases, greetings, simple present tense</li>
+                    <li><strong>A2:</strong> Daily routines, past tense, basic questions</li>
+                    <li><strong>B1:</strong> Opinions, future plans, conditionals</li>
+                    <li><strong>B2:</strong> Complex sentences, subjunctive, idioms</li>
+                    <li><strong>C1:</strong> Abstract topics, nuanced expressions</li>
+                    <li><strong>C2:</strong> Native-like complexity, rare vocabulary</li>
+                </ul>
+            </div>
+
+            <!-- SRS Summary on Setup Screen -->
+            <div id="srs-summary" class="srs-summary">
+                <h3>Your Progress</h3>
+                <div class="srs-stats-grid">
+                    <div class="srs-stat">
+                        <span class="srs-stat-value" id="srs-due-count">0</span>
+                        <span class="srs-stat-label">Due Today</span>
+                    </div>
+                    <div class="srs-stat">
+                        <span class="srs-stat-value" id="srs-mastered-count">0</span>
+                        <span class="srs-stat-label">Mastered</span>
+                    </div>
+                    <div class="srs-stat">
+                        <span class="srs-stat-value" id="srs-accuracy">0%</span>
+                        <span class="srs-stat-label">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn primary">Start Practice</button>
+            <button id="progress-btn" class="btn secondary">View Progress</button>
+        </section>
+
+        <!-- Practice Screen -->
+        <section id="practice-screen" class="screen">
+            <div class="stats-bar">
+                <span id="score-display">Score: 0</span>
+                <span id="streak-display">Streak: 0</span>
+                <span id="level-display">Level: B1</span>
+                <button id="settings-btn" class="btn small">Settings</button>
+            </div>
+
+            <!-- Grammar Info Bar -->
+            <div id="grammar-info" class="grammar-info">
+                <div class="grammar-badge">
+                    <span id="grammar-icon" class="grammar-status-icon">○</span>
+                    <span id="grammar-name">Loading...</span>
+                </div>
+                <span id="grammar-status" class="grammar-status-text"></span>
+            </div>
+
+            <div class="practice-area">
+                <div class="prompt-section">
+                    <h3>Translate this sentence:</h3>
+                    <p id="source-sentence" class="source-text">Loading...</p>
+                    <p id="sentence-hint" class="hint"></p>
+                </div>
+
+                <div class="input-section">
+                    <textarea id="user-answer" placeholder="Type your translation here..." rows="3"></textarea>
+                    <div class="button-row">
+                        <button id="submit-btn" class="btn primary">Check Answer</button>
+                        <button id="skip-btn" class="btn secondary">Skip</button>
+                        <button id="hint-btn" class="btn secondary">Hint</button>
+                    </div>
+                </div>
+
+                <div id="feedback-section" class="feedback-section hidden">
+                    <h3>Results:</h3>
+                    <div class="comparison">
+                        <div class="answer-box">
+                            <h4>Your Answer:</h4>
+                            <p id="user-answer-display"></p>
+                        </div>
+                        <div class="answer-box correct">
+                            <h4>Reference Translation:</h4>
+                            <p id="correct-answer-display"></p>
+                        </div>
+                    </div>
+
+                    <div id="diff-section" class="diff-section">
+                        <h4>Word-by-Word Analysis:</h4>
+                        <div id="diff-display"></div>
+                    </div>
+
+                    <div id="dictionary-section" class="dictionary-section hidden">
+                        <h4>Click a word above to see its definition</h4>
+                        <div id="dictionary-content"></div>
+                    </div>
+
+                    <!-- SRS Feedback -->
+                    <div id="srs-feedback" class="srs-feedback">
+                        <span id="srs-feedback-text"></span>
+                    </div>
+
+                    <div class="feedback-score">
+                        <span id="similarity-score"></span>
+                    </div>
+
+                    <button id="next-btn" class="btn primary">Next Sentence</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Screen -->
+        <section id="progress-screen" class="screen">
+            <div class="progress-header">
+                <h2>Grammar Progress</h2>
+                <button id="back-to-setup" class="btn secondary">Back</button>
+            </div>
+
+            <div class="progress-overview">
+                <div class="progress-stat-card">
+                    <div class="stat-circle mastered">
+                        <span id="progress-mastered">0</span>
+                    </div>
+                    <span>Mastered</span>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-circle reviewing">
+                        <span id="progress-reviewing">0</span>
+                    </div>
+                    <span>Reviewing</span>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-circle learning">
+                        <span id="progress-learning">0</span>
+                    </div>
+                    <span>Learning</span>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-circle new">
+                        <span id="progress-new">0</span>
+                    </div>
+                    <span>New</span>
+                </div>
+            </div>
+
+            <div class="progress-filter">
+                <label for="progress-level-filter">Filter by Level:</label>
+                <select id="progress-level-filter">
+                    <option value="all">All Levels</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+            </div>
+
+            <div id="grammar-list" class="grammar-list">
+                <!-- Grammar items will be populated here -->
+            </div>
+
+            <div class="progress-actions">
+                <button id="export-data-btn" class="btn secondary">Export Progress</button>
+                <button id="reset-progress-btn" class="btn danger">Reset All Progress</button>
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <p>Translating...</p>
+        </div>
+    </div>
+
+    <script src="sentences.js"></script>
+    <script src="srs.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
