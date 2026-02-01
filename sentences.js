@@ -174,7 +174,22 @@ const grammarCategories = {
     "philosophical": { name: "Philosophical Language", level: "C2", description: "Abstract philosophical discussion" },
     "complex-syntax": { name: "Complex Syntax", level: "C2", description: "Sophisticated sentence structures" },
     "argumentation": { name: "Sophisticated Argumentation", level: "C2", description: "Academic argument structures" },
-    "literary-references": { name: "Literary References", level: "C2", description: "Allusions and metaphors" }
+    "literary-references": { name: "Literary References", level: "C2", description: "Allusions and metaphors" },
+
+    // Conversational Categories (all levels)
+    "greetings-responses": { name: "Greeting Responses", level: "A1", description: "Responding to greetings" },
+    "basic-questions-responses": { name: "Basic Question Responses", level: "A1", description: "Answering simple questions" },
+    "polite-expressions": { name: "Polite Expressions", level: "A1", description: "Please, thank you, sorry" },
+    "yes-no-responses": { name: "Yes/No Responses", level: "A2", description: "Answering yes/no questions" },
+    "preference-responses": { name: "Expressing Preferences", level: "A2", description: "Likes, dislikes, preferences" },
+    "invitation-responses": { name: "Invitation Responses", level: "A2", description: "Accepting/declining invitations" },
+    "opinion-responses": { name: "Opinion Responses", level: "B1", description: "Agreeing, disagreeing, elaborating" },
+    "suggestion-responses": { name: "Suggestion Responses", level: "B1", description: "Responding to suggestions" },
+    "clarification-responses": { name: "Asking for Clarification", level: "B1", description: "When you don't understand" },
+    "emotion-responses": { name: "Emotional Responses", level: "B1", description: "Responding to news/emotions" },
+    "negotiation-responses": { name: "Negotiation", level: "B2", description: "Compromising, counter-proposing" },
+    "persuasion-responses": { name: "Persuasion", level: "B2", description: "Convincing others" },
+    "diplomatic-responses": { name: "Diplomatic Responses", level: "C1", description: "Tactful, nuanced responses" }
 };
 
 // ============================================================================
@@ -491,6 +506,326 @@ const grammarTemplates = {
 };
 
 // ============================================================================
+// CONVERSATION PROMPTS - For response practice
+// ============================================================================
+
+const conversationPrompts = {
+    A1: [
+        // Greetings
+        {
+            prompt: "Hello! How are you?",
+            respondWith: "Say you're fine and return the greeting",
+            responses: ["I'm fine, thank you. And you?", "I'm good, thanks! How are you?", "Fine, thanks. And you?", "Good, thank you!"],
+            grammar: ["greetings-responses"],
+            keywords: ["fine", "good", "thanks", "thank", "you"]
+        },
+        {
+            prompt: "Good morning!",
+            respondWith: "Return the greeting",
+            responses: ["Good morning!", "Good morning! How are you?", "Morning!"],
+            grammar: ["greetings-responses"],
+            keywords: ["morning", "good"]
+        },
+        {
+            prompt: "Nice to meet you.",
+            respondWith: "Say it's nice to meet them too",
+            responses: ["Nice to meet you too.", "Pleased to meet you.", "Nice to meet you as well.", "The pleasure is mine."],
+            grammar: ["greetings-responses", "polite-expressions"],
+            keywords: ["nice", "meet", "pleasure", "pleased"]
+        },
+        {
+            prompt: "What is your name?",
+            respondWith: "Tell them your name (use any name)",
+            responses: ["My name is Maria.", "I'm John.", "I am called Sofia.", "My name's Alex."],
+            grammar: ["basic-questions-responses", "present-simple-be"],
+            keywords: ["name", "is", "am", "I'm", "called"]
+        },
+        {
+            prompt: "Where are you from?",
+            respondWith: "Say where you are from (use any country/city)",
+            responses: ["I'm from Spain.", "I am from New York.", "I come from Germany.", "I'm from Tokyo."],
+            grammar: ["basic-questions-responses", "present-simple-be"],
+            keywords: ["from", "I'm", "am", "come"]
+        },
+        {
+            prompt: "Thank you very much!",
+            respondWith: "Say you're welcome",
+            responses: ["You're welcome!", "No problem!", "My pleasure!", "Don't mention it."],
+            grammar: ["polite-expressions"],
+            keywords: ["welcome", "problem", "pleasure", "mention"]
+        },
+        {
+            prompt: "I'm sorry.",
+            respondWith: "Say it's okay / no problem",
+            responses: ["It's okay.", "No problem.", "Don't worry about it.", "That's alright."],
+            grammar: ["polite-expressions"],
+            keywords: ["okay", "problem", "worry", "alright", "fine"]
+        },
+        {
+            prompt: "Do you speak English?",
+            respondWith: "Say yes, a little",
+            responses: ["Yes, a little.", "Yes, I do.", "A little bit.", "Yes, I speak some English."],
+            grammar: ["basic-questions-responses", "present-simple"],
+            keywords: ["yes", "little", "bit", "some"]
+        }
+    ],
+
+    A2: [
+        // Yes/No questions
+        {
+            prompt: "Do you like coffee?",
+            respondWith: "Say yes and that you drink it every morning",
+            responses: ["Yes, I love coffee. I drink it every morning.", "Yes, I like it a lot. I have it every morning.", "Yes! I drink coffee every morning."],
+            grammar: ["yes-no-responses", "present-simple", "frequency-adverbs"],
+            keywords: ["yes", "coffee", "morning", "drink", "every"]
+        },
+        {
+            prompt: "Can you help me?",
+            respondWith: "Say yes, of course, and ask what they need",
+            responses: ["Yes, of course! What do you need?", "Sure! How can I help?", "Of course! What can I do for you?"],
+            grammar: ["yes-no-responses", "modals-basic"],
+            keywords: ["yes", "course", "sure", "help", "need", "what"]
+        },
+        {
+            prompt: "Would you like to go to the cinema tonight?",
+            respondWith: "Accept the invitation enthusiastically",
+            responses: ["Yes, I'd love to!", "That sounds great!", "Sure, what time?", "Yes, that would be fun!"],
+            grammar: ["invitation-responses", "future-going-to"],
+            keywords: ["yes", "love", "great", "sure", "sounds", "fun"]
+        },
+        {
+            prompt: "Would you like to go to the cinema tonight?",
+            respondWith: "Politely decline, saying you're busy",
+            responses: ["I'm sorry, I can't. I'm busy tonight.", "Thanks, but I have plans tonight.", "I'd love to, but I can't tonight.", "Sorry, maybe another time?"],
+            grammar: ["invitation-responses", "modals-basic"],
+            keywords: ["sorry", "can't", "busy", "plans", "another"]
+        },
+        {
+            prompt: "What do you do for work?",
+            respondWith: "Say your job (use any profession)",
+            responses: ["I'm a teacher.", "I work as an engineer.", "I'm a doctor.", "I work in an office."],
+            grammar: ["basic-questions-responses", "present-simple"],
+            keywords: ["I'm", "work", "am"]
+        },
+        {
+            prompt: "What are you doing this weekend?",
+            respondWith: "Say you're visiting family",
+            responses: ["I'm visiting my family.", "I'm going to visit my parents.", "I'm spending time with my family.", "I have plans with my family."],
+            grammar: ["present-continuous", "future-going-to"],
+            keywords: ["visiting", "family", "going", "parents", "spending"]
+        },
+        {
+            prompt: "How was your day?",
+            respondWith: "Say it was good but tiring",
+            responses: ["It was good, but tiring.", "Pretty good, but I'm tired.", "Good, thanks! A bit exhausting though.", "It was nice but long."],
+            grammar: ["past-simple", "connectors-basic"],
+            keywords: ["good", "tiring", "tired", "exhausting", "but"]
+        },
+        {
+            prompt: "What time is it?",
+            respondWith: "Say it's 3 o'clock",
+            responses: ["It's 3 o'clock.", "It's three.", "Three o'clock.", "It's 3 PM."],
+            grammar: ["basic-questions-responses", "numbers"],
+            keywords: ["three", "3", "o'clock"]
+        }
+    ],
+
+    B1: [
+        // Opinions
+        {
+            prompt: "What do you think about social media?",
+            respondWith: "Give a balanced opinion - some good and bad points",
+            responses: [
+                "I think it has both advantages and disadvantages. It's good for staying connected, but it can be addictive.",
+                "In my opinion, it's useful for communication, but we shouldn't spend too much time on it.",
+                "I believe it can be helpful, but it also has some negative effects on people."
+            ],
+            grammar: ["opinion-responses", "opinions", "connectors-basic"],
+            keywords: ["think", "opinion", "believe", "but", "good", "bad", "advantages", "disadvantages"]
+        },
+        {
+            prompt: "I think we should take a taxi.",
+            respondWith: "Disagree politely and suggest walking instead",
+            responses: [
+                "I'm not sure about that. The weather is nice, so why don't we walk?",
+                "Actually, I think we should walk. It's not far and it's a beautiful day.",
+                "I'd prefer to walk, if you don't mind. It's not that far."
+            ],
+            grammar: ["suggestion-responses", "opinions", "modals-basic"],
+            keywords: ["walk", "prefer", "think", "not sure", "actually"]
+        },
+        {
+            prompt: "Sorry, I didn't understand. Could you repeat that?",
+            respondWith: "Say of course and offer to speak more slowly",
+            responses: [
+                "Of course! I'll speak more slowly.",
+                "Sure, no problem. Let me say it again more slowly.",
+                "Yes, of course. I'll repeat it."
+            ],
+            grammar: ["clarification-responses", "modals-basic"],
+            keywords: ["course", "sure", "slowly", "repeat", "again"]
+        },
+        {
+            prompt: "I just got a promotion at work!",
+            respondWith: "Congratulate them enthusiastically",
+            responses: [
+                "Congratulations! That's wonderful news!",
+                "That's amazing! Well done!",
+                "How exciting! Congratulations!",
+                "That's great news! You deserve it!"
+            ],
+            grammar: ["emotion-responses"],
+            keywords: ["congratulations", "wonderful", "amazing", "great", "exciting", "deserve"]
+        },
+        {
+            prompt: "My grandmother passed away last week.",
+            respondWith: "Express sympathy",
+            responses: [
+                "I'm so sorry to hear that. My condolences.",
+                "I'm very sorry for your loss.",
+                "That's terrible. I'm here if you need anything.",
+                "I'm so sorry. Please let me know if I can help."
+            ],
+            grammar: ["emotion-responses"],
+            keywords: ["sorry", "condolences", "loss", "here", "help"]
+        },
+        {
+            prompt: "Have you ever been to Japan?",
+            respondWith: "Say no, but you'd love to go someday",
+            responses: [
+                "No, I haven't, but I'd love to go someday.",
+                "Not yet, but it's on my bucket list!",
+                "No, but I've always wanted to visit Japan.",
+                "I haven't, but I hope to go one day."
+            ],
+            grammar: ["present-perfect", "first-conditional"],
+            keywords: ["no", "haven't", "love", "want", "hope", "someday", "visit"]
+        },
+        {
+            prompt: "Why don't we have lunch together?",
+            respondWith: "Accept and suggest a restaurant",
+            responses: [
+                "That sounds great! How about that Italian place nearby?",
+                "Good idea! There's a nice café around the corner.",
+                "Sure! Do you know any good restaurants around here?"
+            ],
+            grammar: ["suggestion-responses", "invitation-responses"],
+            keywords: ["sounds", "great", "good", "idea", "sure", "restaurant", "place", "café"]
+        }
+    ],
+
+    B2: [
+        // Negotiation and persuasion
+        {
+            prompt: "I think we should postpone the meeting until next week.",
+            respondWith: "Partially agree but suggest a compromise - maybe just delay by two days",
+            responses: [
+                "I see your point, but what if we just pushed it back by two days instead?",
+                "I understand, but perhaps we could delay it until Wednesday rather than next week?",
+                "That might be too long. How about we reschedule for Thursday?"
+            ],
+            grammar: ["negotiation-responses", "second-conditional"],
+            keywords: ["understand", "but", "what if", "perhaps", "instead", "rather", "how about"]
+        },
+        {
+            prompt: "I don't think this project is worth pursuing.",
+            respondWith: "Respectfully disagree and give a reason to continue",
+            responses: [
+                "I understand your concerns, but I think we should give it more time. The initial results look promising.",
+                "I see where you're coming from, but the potential benefits outweigh the risks in my view.",
+                "While I respect your opinion, I believe we shouldn't give up yet. We've made good progress."
+            ],
+            grammar: ["persuasion-responses", "opinions"],
+            keywords: ["understand", "but", "think", "believe", "potential", "progress", "promising"]
+        },
+        {
+            prompt: "If you could live anywhere in the world, where would you choose?",
+            respondWith: "Name a place and explain why",
+            responses: [
+                "I'd probably choose somewhere coastal, like Portugal. I love the sea and the weather there is perfect.",
+                "I think I'd live in Japan. The culture fascinates me and I love Japanese food.",
+                "I'd choose Canada. It has beautiful nature and people are very friendly there."
+            ],
+            grammar: ["second-conditional", "opinions"],
+            keywords: ["choose", "probably", "think", "love", "because", "would"]
+        },
+        {
+            prompt: "What would you have done differently if you were me?",
+            respondWith: "Give thoughtful advice about what you would have done",
+            responses: [
+                "If I had been in your situation, I might have waited a bit longer before making a decision.",
+                "I think I would have asked for more opinions before deciding.",
+                "Honestly, I probably would have done the same thing. It was a difficult situation."
+            ],
+            grammar: ["third-conditional", "modals-perfect"],
+            keywords: ["would have", "might have", "if", "situation", "probably"]
+        },
+        {
+            prompt: "The service at this restaurant is terrible!",
+            respondWith: "Agree but suggest staying calm and speaking to the manager",
+            responses: [
+                "You're right, it's not great. Maybe we should speak to the manager calmly.",
+                "I agree, it's disappointing. Let's ask to speak with someone in charge.",
+                "Yes, it could be better. Perhaps we should mention it politely before we leave."
+            ],
+            grammar: ["opinion-responses", "suggestion-responses"],
+            keywords: ["agree", "right", "maybe", "should", "speak", "manager", "politely"]
+        }
+    ],
+
+    C1: [
+        // Diplomatic and nuanced responses
+        {
+            prompt: "Your presentation was interesting, but I'm not sure the data supports your conclusions.",
+            respondWith: "Acknowledge the criticism gracefully and offer to provide more evidence",
+            responses: [
+                "That's a fair point. I'd be happy to share the additional research that led me to these conclusions.",
+                "I appreciate the feedback. Perhaps I didn't make the connection clear enough - I can provide more supporting data.",
+                "Thank you for raising that. You make a valid point, and I'll make sure to strengthen the evidence in my next draft."
+            ],
+            grammar: ["diplomatic-responses", "hedging-politeness"],
+            keywords: ["appreciate", "fair", "point", "happy", "provide", "evidence", "valid"]
+        },
+        {
+            prompt: "I've heard that you're not happy with how the project is being managed.",
+            respondWith: "Diplomatically address the concern without being negative",
+            responses: [
+                "I wouldn't say unhappy, but I do think there's room for improvement in our communication processes.",
+                "I have some concerns, which I'd prefer to discuss directly with the team rather than through rumors.",
+                "That's not quite accurate. I've raised some suggestions for improvement, but I support the project overall."
+            ],
+            grammar: ["diplomatic-responses", "nuanced-expressions"],
+            keywords: ["wouldn't", "concerns", "improvement", "prefer", "rather", "suggestions"]
+        },
+        {
+            prompt: "Don't you think working from home is less productive than being in the office?",
+            respondWith: "Challenge the assumption diplomatically while acknowledging both sides",
+            responses: [
+                "I think it really depends on the individual and the type of work. Some tasks benefit from collaboration, while others require deep focus.",
+                "I'd hesitate to make such a blanket statement. The research actually shows mixed results depending on the context.",
+                "That's an interesting assumption, but my experience has been quite different. Perhaps it varies by industry."
+            ],
+            grammar: ["diplomatic-responses", "complex-reasoning"],
+            keywords: ["depends", "think", "hesitate", "actually", "experience", "perhaps", "varies"]
+        }
+    ],
+
+    C2: [
+        {
+            prompt: "Some argue that artificial intelligence will eventually make human workers obsolete. What's your take on this?",
+            respondWith: "Give a sophisticated, nuanced response considering multiple perspectives",
+            responses: [
+                "While I understand the concern, I'd argue that historical precedent suggests technology tends to transform rather than eliminate human labor. That said, the pace of change this time may indeed prove qualitatively different.",
+                "It's a provocative thesis, but I think it oversimplifies the relationship between technological capability and economic reality. The question isn't whether AI can replace humans, but whether doing so would be desirable or even feasible.",
+                "I find such deterministic predictions somewhat reductive. Human work encompasses far more than can be captured by efficiency metrics alone."
+            ],
+            grammar: ["philosophical", "argumentation"],
+            keywords: ["while", "argue", "indeed", "oversimplifies", "question", "whether", "encompasses"]
+        }
+    ]
+};
+
+// ============================================================================
 // SENTENCE GENERATION ENGINE
 // ============================================================================
 
@@ -564,6 +899,61 @@ function getRandomSentenceWithGrammar(level, targetGrammar = null) {
     return generateSentence(level, targetGrammar);
 }
 
+// Get a random conversation prompt for response practice
+function getRandomConversationPrompt(level, targetGrammar = null) {
+    const prompts = conversationPrompts[level];
+    if (!prompts || prompts.length === 0) {
+        // Fallback to A1 if level has no prompts
+        const fallbackPrompts = conversationPrompts['A1'];
+        if (!fallbackPrompts || fallbackPrompts.length === 0) {
+            return null;
+        }
+        return pickRandom(fallbackPrompts);
+    }
+
+    // If targeting specific grammar, filter prompts
+    if (targetGrammar) {
+        const filtered = prompts.filter(p => p.grammar.includes(targetGrammar));
+        if (filtered.length > 0) {
+            return pickRandom(filtered);
+        }
+    }
+
+    return pickRandom(prompts);
+}
+
+// Get a mixed question - either translation or conversation (weighted)
+function getRandomQuestion(level, targetGrammar = null) {
+    // 30% chance of conversation prompt, 70% translation
+    // This keeps conversation practice integrated but not overwhelming
+    const conversationChance = 0.3;
+
+    // Check if we have conversation prompts for this level
+    const hasConversationPrompts = conversationPrompts[level] && conversationPrompts[level].length > 0;
+
+    if (hasConversationPrompts && Math.random() < conversationChance) {
+        const prompt = getRandomConversationPrompt(level, targetGrammar);
+        if (prompt) {
+            return {
+                type: 'respond',
+                prompt: prompt.prompt,
+                respondWith: prompt.respondWith,
+                responses: prompt.responses,
+                grammar: prompt.grammar,
+                keywords: prompt.keywords || []
+            };
+        }
+    }
+
+    // Default to translation
+    const sentence = generateSentence(level, targetGrammar);
+    return {
+        type: 'translate',
+        sentence: sentence.sentence,
+        grammar: sentence.grammar
+    };
+}
+
 function getAvailableLevels() {
     return Object.keys(grammarTemplates);
 }
@@ -612,9 +1002,12 @@ if (typeof module !== 'undefined' && module.exports) {
         vocab,
         grammarTemplates,
         grammarCategories,
+        conversationPrompts,
         generateSentence,
         getRandomSentence,
         getRandomSentenceWithGrammar,
+        getRandomConversationPrompt,
+        getRandomQuestion,
         getAvailableLevels,
         getGrammarCategories,
         getGrammarCategoriesForLevel,

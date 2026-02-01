@@ -228,13 +228,15 @@
 
             <div class="practice-area">
                 <div class="prompt-section">
-                    <h3>Translate this sentence:</h3>
+                    <div class="prompt-header">
+                        <span id="question-type-badge" class="question-type-badge translate">TRANSLATE</span>
+                    </div>
                     <p id="source-sentence" class="source-text">Loading...</p>
                     <p id="sentence-hint" class="hint"></p>
                 </div>
 
                 <div class="input-section">
-                    <textarea id="user-answer" placeholder="Type your translation here..." rows="3"></textarea>
+                    <textarea id="user-answer" placeholder="Type your response here..." rows="3"></textarea>
                     <div class="button-row">
                         <button id="submit-btn" class="btn primary">Check Answer</button>
                         <button id="skip-btn" class="btn secondary">Skip</button>
@@ -250,9 +252,21 @@
                             <p id="user-answer-display"></p>
                         </div>
                         <div class="answer-box correct">
-                            <h4>Reference Translation:</h4>
+                            <h4>Best Match:</h4>
                             <p id="correct-answer-display"></p>
                         </div>
+                    </div>
+
+                    <!-- Respond With Section (for respond mode) -->
+                    <div id="respond-with-section" class="respond-with-section hidden">
+                        <h4>You were asked to:</h4>
+                        <p id="respond-with-text" class="respond-with-text"></p>
+                    </div>
+
+                    <!-- Alternative Responses Section (for respond mode) -->
+                    <div id="alternative-responses-section" class="alternative-responses-section hidden">
+                        <h4>Other acceptable responses:</h4>
+                        <ul id="alternative-responses-list" class="alternative-responses-list"></ul>
                     </div>
 
                     <div id="diff-section" class="diff-section">
@@ -274,7 +288,7 @@
                         <span id="similarity-score"></span>
                     </div>
 
-                    <button id="next-btn" class="btn primary">Next Sentence</button>
+                    <button id="next-btn" class="btn primary">Next</button>
                 </div>
             </div>
         </section>

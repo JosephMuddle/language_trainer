@@ -15,6 +15,12 @@ class LanguageTrainer {
         this.hintsUsed = 0;
         this.usedSentences = new Set();
 
+        // Response mode state
+        this.questionType = 'translate'; // 'translate' or 'respond'
+        this.currentResponses = []; // Multiple acceptable responses for respond mode
+        this.currentRespondWith = ''; // The "respond with" hint
+        this.currentKeywords = []; // Keywords for partial credit
+
         // DOM Elements - Setup Screen
         this.setupScreen = document.getElementById('setup-screen');
         this.practiceScreen = document.getElementById('practice-screen');
@@ -41,6 +47,13 @@ class LanguageTrainer {
         this.dictionarySection = document.getElementById('dictionary-section');
         this.dictionaryContent = document.getElementById('dictionary-content');
         this.similarityScore = document.getElementById('similarity-score');
+
+        // Question type elements
+        this.questionTypeBadge = document.getElementById('question-type-badge');
+        this.respondWithSection = document.getElementById('respond-with-section');
+        this.respondWithText = document.getElementById('respond-with-text');
+        this.alternativeResponsesSection = document.getElementById('alternative-responses-section');
+        this.alternativeResponsesList = document.getElementById('alternative-responses-list');
 
         // Grammar Info
         this.grammarInfo = document.getElementById('grammar-info');
@@ -213,6 +226,19 @@ class LanguageTrainer {
         this.hintsUsed = 0;
         this.userAnswer.value = '';
 
+        // Reset response mode state
+        this.currentResponses = [];
+        this.currentRespondWith = '';
+        this.currentKeywords = [];
+
+        // Hide alternative responses section
+        if (this.alternativeResponsesSection) {
+            this.alternativeResponsesSection.classList.add('hidden');
+        }
+        if (this.respondWithSection) {
+            this.respondWithSection.classList.add('hidden');
+        }
+
         try {
             // Use SRS to determine which grammar to practice
             const nextGrammar = srs.getNextGrammar(this.level);
@@ -230,47 +256,27 @@ class LanguageTrainer {
                 }
             }
 
-            // Get a sentence with the target grammar
-            const sentenceData = getRandomSentenceWithGrammar(this.level, targetGrammar);
-            let englishSentence = sentenceData.sentence;
-            this.currentGrammar = sentenceData.grammar;
+            // Get a question (either translation or conversation response)
+            const question = getRandomQuestion(this.level, targetGrammar);
+            this.questionType = question.type;
+            this.currentGrammar = question.grammar;
 
-            // If no grammar ID set yet, use the first grammar from the sentence
+            // Update question type badge
+            this.updateQuestionTypeBadge();
+
+            // If no grammar ID set yet, use the first grammar from the question
             if (!this.currentGrammarId && this.currentGrammar.length > 0) {
                 this.currentGrammarId = this.currentGrammar[0];
             }
 
-            // Avoid repeating recent sentences
-            let attempts = 0;
-            while (this.usedSentences.has(englishSentence) && attempts < 10) {
-                const newSentence = getRandomSentenceWithGrammar(this.level, targetGrammar);
-                englishSentence = newSentence.sentence;
-                this.currentGrammar = newSentence.grammar;
-                attempts++;
-            }
-            this.usedSentences.add(englishSentence);
-
-            // Clear history if too large
-            if (this.usedSentences.size > 50) {
-                this.usedSentences.clear();
-            }
-
-            // If native language is English, show English sentence directly
-            if (this.nativeLang === 'en') {
-                this.currentSentence = englishSentence;
+            if (question.type === 'respond') {
+                // Handle conversation response mode
+                await this.loadRespondQuestion(question);
             } else {
-                // Translate English sentence to native language
-                this.currentSentence = await this.translate(englishSentence, 'en', this.nativeLang);
+                // Handle translation mode (existing logic)
+                await this.loadTranslateQuestion(question, targetGrammar);
             }
 
-            // Get the target language translation (this is what we'll compare against)
-            if (this.targetLang === 'en') {
-                this.currentTranslation = englishSentence;
-            } else {
-                this.currentTranslation = await this.translate(englishSentence, 'en', this.targetLang);
-            }
-
-            this.sourceSentence.textContent = this.currentSentence;
             this.updateGrammarInfo();
 
         } catch (error) {
@@ -280,6 +286,86 @@ class LanguageTrainer {
 
         this.showLoading(false);
         this.userAnswer.focus();
+    }
+
+    updateQuestionTypeBadge() {
+        if (!this.questionTypeBadge) return;
+
+        if (this.questionType === 'respond') {
+            this.questionTypeBadge.textContent = 'RESPOND';
+            this.questionTypeBadge.className = 'question-type-badge respond';
+            this.questionTypeBadge.title = 'Respond to the prompt in your target language';
+        } else {
+            this.questionTypeBadge.textContent = 'TRANSLATE';
+            this.questionTypeBadge.className = 'question-type-badge translate';
+            this.questionTypeBadge.title = 'Translate this sentence to your target language';
+        }
+    }
+
+    async loadRespondQuestion(question) {
+        // Store response data
+        this.currentRespondWith = question.respondWith;
+        this.currentKeywords = question.keywords || [];
+
+        // The prompt is in English, translate to target language
+        const promptInTarget = this.targetLang === 'en'
+            ? question.prompt
+            : await this.translate(question.prompt, 'en', this.targetLang);
+
+        this.currentSentence = promptInTarget;
+        this.sourceSentence.textContent = promptInTarget;
+
+        // Translate all acceptable responses to target language
+        this.currentResponses = [];
+        for (const response of question.responses) {
+            if (this.targetLang === 'en') {
+                this.currentResponses.push(response);
+            } else {
+                const translated = await this.translate(response, 'en', this.targetLang);
+                this.currentResponses.push(translated);
+            }
+        }
+
+        // Set the first response as the "main" translation for comparison
+        this.currentTranslation = this.currentResponses[0] || '';
+    }
+
+    async loadTranslateQuestion(question, targetGrammar) {
+        let englishSentence = question.sentence;
+
+        // Avoid repeating recent sentences
+        let attempts = 0;
+        while (this.usedSentences.has(englishSentence) && attempts < 10) {
+            const newQuestion = getRandomQuestion(this.level, targetGrammar);
+            if (newQuestion.type === 'translate') {
+                englishSentence = newQuestion.sentence;
+                this.currentGrammar = newQuestion.grammar;
+            }
+            attempts++;
+        }
+        this.usedSentences.add(englishSentence);
+
+        // Clear history if too large
+        if (this.usedSentences.size > 50) {
+            this.usedSentences.clear();
+        }
+
+        // If native language is English, show English sentence directly
+        if (this.nativeLang === 'en') {
+            this.currentSentence = englishSentence;
+        } else {
+            // Translate English sentence to native language
+            this.currentSentence = await this.translate(englishSentence, 'en', this.nativeLang);
+        }
+
+        // Get the target language translation (this is what we'll compare against)
+        if (this.targetLang === 'en') {
+            this.currentTranslation = englishSentence;
+        } else {
+            this.currentTranslation = await this.translate(englishSentence, 'en', this.targetLang);
+        }
+
+        this.sourceSentence.textContent = this.currentSentence;
     }
 
     async translate(text, fromLang, toLang) {
@@ -306,20 +392,49 @@ class LanguageTrainer {
         const userText = this.userAnswer.value.trim();
 
         if (!userText) {
-            alert('Please enter your translation');
+            alert('Please enter your response');
             return;
         }
 
         this.showLoading(true);
 
         try {
-            // Display results
+            // Display user's answer
             this.userAnswerDisplay.textContent = userText;
-            this.correctAnswerDisplay.textContent = this.currentTranslation;
 
-            // Calculate similarity and create diff
-            const similarity = this.calculateSimilarity(userText, this.currentTranslation);
-            this.displayDiff(userText, this.currentTranslation);
+            let similarity;
+            let bestMatch = this.currentTranslation;
+
+            if (this.questionType === 'respond' && this.currentResponses.length > 0) {
+                // For respond mode, compare against all acceptable responses
+                // Find the best match
+                let bestSimilarity = 0;
+
+                for (const response of this.currentResponses) {
+                    const sim = this.calculateSimilarity(userText, response);
+                    if (sim > bestSimilarity) {
+                        bestSimilarity = sim;
+                        bestMatch = response;
+                    }
+                }
+
+                // Also give partial credit for keywords
+                const keywordBonus = this.calculateKeywordBonus(userText);
+                similarity = Math.min(100, bestSimilarity + keywordBonus);
+
+                // Show the best matching response
+                this.correctAnswerDisplay.textContent = bestMatch;
+
+                // Show all acceptable responses and the "respond with" hint
+                this.showAlternativeResponses();
+            } else {
+                // Standard translation mode
+                similarity = this.calculateSimilarity(userText, this.currentTranslation);
+                this.correctAnswerDisplay.textContent = this.currentTranslation;
+            }
+
+            // Create diff against the best match
+            this.displayDiff(userText, bestMatch);
             this.displayScore(similarity);
 
             // Update SRS for all grammar categories in this sentence
@@ -346,6 +461,49 @@ class LanguageTrainer {
         }
 
         this.showLoading(false);
+    }
+
+    calculateKeywordBonus(userText) {
+        if (!this.currentKeywords || this.currentKeywords.length === 0) {
+            return 0;
+        }
+
+        const normalizedUser = userText.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        let matchedKeywords = 0;
+
+        for (const keyword of this.currentKeywords) {
+            const normalizedKeyword = keyword.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (normalizedUser.includes(normalizedKeyword)) {
+                matchedKeywords++;
+            }
+        }
+
+        // Give up to 10% bonus for keyword matches
+        const keywordRatio = matchedKeywords / this.currentKeywords.length;
+        return Math.round(keywordRatio * 10);
+    }
+
+    showAlternativeResponses() {
+        // Show the "respond with" section
+        if (this.respondWithSection && this.currentRespondWith) {
+            this.respondWithSection.classList.remove('hidden');
+            if (this.respondWithText) {
+                this.respondWithText.textContent = this.currentRespondWith;
+            }
+        }
+
+        // Show alternative responses
+        if (this.alternativeResponsesSection && this.currentResponses.length > 1) {
+            this.alternativeResponsesSection.classList.remove('hidden');
+            if (this.alternativeResponsesList) {
+                this.alternativeResponsesList.innerHTML = '';
+                for (const response of this.currentResponses) {
+                    const li = document.createElement('li');
+                    li.textContent = response;
+                    this.alternativeResponsesList.appendChild(li);
+                }
+            }
+        }
     }
 
     calculateSimilarity(text1, text2) {
@@ -878,12 +1036,24 @@ class LanguageTrainer {
     async showHint() {
         this.hintsUsed++;
 
-        // Show first few words of the translation as a hint
-        const words = this.currentTranslation.split(/\s+/);
-        const hintWords = Math.min(this.hintsUsed, Math.ceil(words.length / 2));
-        const hint = words.slice(0, hintWords).join(' ') + '...';
-
-        this.sentenceHint.textContent = `Hint: "${hint}"`;
+        if (this.questionType === 'respond' && this.currentRespondWith) {
+            // For respond mode, first hint shows the "respond with" idea
+            if (this.hintsUsed === 1) {
+                this.sentenceHint.textContent = `Respond with: "${this.currentRespondWith}"`;
+            } else {
+                // Subsequent hints show parts of an acceptable response
+                const words = this.currentTranslation.split(/\s+/);
+                const hintWords = Math.min(this.hintsUsed - 1, Math.ceil(words.length / 2));
+                const hint = words.slice(0, hintWords).join(' ') + '...';
+                this.sentenceHint.textContent = `Hint: "${hint}"`;
+            }
+        } else {
+            // Standard translation hint - show first few words
+            const words = this.currentTranslation.split(/\s+/);
+            const hintWords = Math.min(this.hintsUsed, Math.ceil(words.length / 2));
+            const hint = words.slice(0, hintWords).join(' ') + '...';
+            this.sentenceHint.textContent = `Hint: "${hint}"`;
+        }
     }
 
     skipSentence() {

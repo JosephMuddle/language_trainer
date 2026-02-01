@@ -1022,3 +1022,108 @@ header h1 {
         font-size: 1.2rem;
     }
 }
+
+/* ============================================
+   Question Type Badge & Respond Mode Styles
+   ============================================ */
+
+.prompt-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.question-type-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.question-type-badge.translate {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    color: #a5b4fc;
+    border: 1px solid rgba(102, 126, 234, 0.4);
+}
+
+.question-type-badge.respond {
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.3) 0%, rgba(251, 146, 60, 0.3) 100%);
+    color: #fda4af;
+    border: 1px solid rgba(244, 114, 182, 0.4);
+}
+
+/* Respond With Section */
+.respond-with-section {
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%);
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(244, 114, 182, 0.2);
+}
+
+.respond-with-section.hidden {
+    display: none;
+}
+
+.respond-with-section h4 {
+    color: #fda4af;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.respond-with-text {
+    color: #fce7f3;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+/* Alternative Responses Section */
+.alternative-responses-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.alternative-responses-section.hidden {
+    display: none;
+}
+
+.alternative-responses-section h4 {
+    color: #90a4ae;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.alternative-responses-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alternative-responses-list li {
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: rgba(52, 211, 153, 0.08);
+    border-radius: 10px;
+    color: #a7f3d0;
+    font-size: 0.95rem;
+    border-left: 3px solid rgba(52, 211, 153, 0.4);
+    transition: all 0.2s ease;
+}
+
+.alternative-responses-list li:last-child {
+    margin-bottom: 0;
+}
+
+.alternative-responses-list li:hover {
+    background: rgba(52, 211, 153, 0.12);
+    transform: translateX(3px);
+}
