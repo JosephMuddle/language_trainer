@@ -87,6 +87,7 @@ class LanguageTrainer {
         this.backToSetupBtn = document.getElementById('back-to-setup');
         this.exportDataBtn = document.getElementById('export-data-btn');
         this.resetProgressBtn = document.getElementById('reset-progress-btn');
+        this.speakBtn = document.getElementById('speak-btn');
 
         this.bindEvents();
         this.updateSRSSummary();
@@ -103,6 +104,7 @@ class LanguageTrainer {
         this.backToSetupBtn.addEventListener('click', () => this.showSetupScreen());
         this.exportDataBtn.addEventListener('click', () => this.exportProgress());
         this.resetProgressBtn.addEventListener('click', () => this.resetProgress());
+        this.speakBtn.addEventListener('click', () => this.speakText());
 
         // Progress filter
         this.progressLevelFilter.addEventListener('change', () => this.renderGrammarList());
@@ -1055,6 +1057,63 @@ class LanguageTrainer {
             const hint = words.slice(0, hintWords).join(' ') + '...';
             this.sentenceHint.textContent = `Hint: "${hint}"`;
         }
+    }
+
+    speakText() {
+        // Use Web Speech API (built into browsers, free, works offline)
+        if (!('speechSynthesis' in window)) {
+            alert('Text-to-speech is not supported in your browser.');
+            return;
+        }
+
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        // Determine what text to speak based on question type
+        let textToSpeak = '';
+        let langCode = '';
+
+        if (this.questionType === 'respond') {
+            // For respond questions, speak the prompt in the target language
+            textToSpeak = this.currentSentence;
+            langCode = this.targetLang;
+        } else {
+            // For translate questions, speak the source sentence in native language
+            textToSpeak = this.currentSentence;
+            langCode = this.nativeLang;
+        }
+
+        if (!textToSpeak) return;
+
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+        // Map language codes to BCP 47 language tags for speech synthesis
+        const langMap = {
+            'en': 'en-US', 'es': 'es-ES', 'fr': 'fr-FR', 'de': 'de-DE',
+            'it': 'it-IT', 'pt': 'pt-PT', 'zh': 'zh-CN', 'ja': 'ja-JP',
+            'ko': 'ko-KR', 'ru': 'ru-RU', 'ar': 'ar-SA', 'nl': 'nl-NL',
+            'pl': 'pl-PL', 'sv': 'sv-SE', 'da': 'da-DK', 'no': 'nb-NO',
+            'fi': 'fi-FI', 'el': 'el-GR', 'cs': 'cs-CZ', 'hu': 'hu-HU',
+            'ro': 'ro-RO', 'sk': 'sk-SK', 'bg': 'bg-BG', 'hr': 'hr-HR',
+            'sl': 'sl-SI', 'et': 'et-EE', 'lv': 'lv-LV', 'lt': 'lt-LT',
+            'uk': 'uk-UA', 'sr': 'sr-RS', 'ca': 'ca-ES', 'hi': 'hi-IN',
+            'bn': 'bn-IN', 'th': 'th-TH', 'vi': 'vi-VN', 'id': 'id-ID',
+            'ms': 'ms-MY', 'tl': 'fil-PH', 'ta': 'ta-IN', 'te': 'te-IN',
+            'tr': 'tr-TR', 'he': 'he-IL', 'fa': 'fa-IR', 'af': 'af-ZA',
+            'sw': 'sw-KE'
+        };
+
+        utterance.lang = langMap[langCode] || langCode;
+        utterance.rate = 0.9; // Slightly slower for language learning
+
+        // Try to find a voice that matches the language
+        const voices = window.speechSynthesis.getVoices();
+        const matchingVoice = voices.find(v => v.lang.startsWith(langCode) || v.lang.startsWith(utterance.lang.split('-')[0]));
+        if (matchingVoice) {
+            utterance.voice = matchingVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
     }
 
     skipSentence() {
