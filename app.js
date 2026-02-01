@@ -1040,15 +1040,30 @@ class LanguageTrainer {
         this.hintsUsed++;
 
         if (this.questionType === 'respond' && this.currentRespondWith) {
-            // For respond mode, first hint shows the "respond with" idea
+            // For respond mode: 3-stage hint system
             if (this.hintsUsed === 1) {
+                // Stage 1: Show the "respond with" instruction
                 this.sentenceHint.textContent = `Respond with: "${this.currentRespondWith}"`;
+            } else if (this.hintsUsed === 2) {
+                // Stage 2: Show native language translation of an acceptable response
+                this.sentenceHint.textContent = 'Translating example response...';
+                try {
+                    const nativeTranslation = await this.translate(
+                        this.currentTranslation,
+                        this.targetLang,
+                        this.nativeLang
+                    );
+                    this.sentenceHint.textContent = `Example in ${this.getLanguageName(this.nativeLang)}: "${nativeTranslation}"`;
+                } catch (error) {
+                    // Fallback if translation fails
+                    this.sentenceHint.textContent = `Example: "${this.currentRespondWith}"`;
+                }
             } else {
-                // Subsequent hints show parts of an acceptable response
+                // Stage 3+: Show parts of the target language response
                 const words = this.currentTranslation.split(/\s+/);
-                const hintWords = Math.min(this.hintsUsed - 1, Math.ceil(words.length / 2));
+                const hintWords = Math.min(this.hintsUsed - 2, Math.ceil(words.length / 2));
                 const hint = words.slice(0, hintWords).join(' ') + '...';
-                this.sentenceHint.textContent = `Hint: "${hint}"`;
+                this.sentenceHint.textContent = `In ${this.getLanguageName(this.targetLang)}: "${hint}"`;
             }
         } else {
             // Standard translation hint - show first few words
