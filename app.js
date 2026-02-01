@@ -240,19 +240,17 @@ class LanguageTrainer {
         }
 
         try {
-            // Use SRS to determine which grammar to practice
+            // Use SRS to determine which grammar to practice (as a suggestion)
             const nextGrammar = srs.getNextGrammar(this.level);
             let targetGrammar = null;
 
             if (nextGrammar) {
-                this.currentGrammarId = nextGrammar.grammarId;
                 targetGrammar = nextGrammar.grammarId;
             } else {
                 // No SRS recommendation, pick random grammar for current level
                 const levelGrammar = getGrammarCategoriesForLevel(this.level);
                 if (levelGrammar.length > 0) {
-                    this.currentGrammarId = levelGrammar[Math.floor(Math.random() * levelGrammar.length)].id;
-                    targetGrammar = this.currentGrammarId;
+                    targetGrammar = levelGrammar[Math.floor(Math.random() * levelGrammar.length)].id;
                 }
             }
 
@@ -261,13 +259,16 @@ class LanguageTrainer {
             this.questionType = question.type;
             this.currentGrammar = question.grammar;
 
+            // IMPORTANT: Always set grammar ID from the actual question, not SRS suggestion
+            // The question's grammar array contains what we're actually practicing
+            if (this.currentGrammar && this.currentGrammar.length > 0) {
+                this.currentGrammarId = this.currentGrammar[0];
+            } else {
+                this.currentGrammarId = targetGrammar;
+            }
+
             // Update question type badge
             this.updateQuestionTypeBadge();
-
-            // If no grammar ID set yet, use the first grammar from the question
-            if (!this.currentGrammarId && this.currentGrammar.length > 0) {
-                this.currentGrammarId = this.currentGrammar[0];
-            }
 
             if (question.type === 'respond') {
                 // Handle conversation response mode
