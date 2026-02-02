@@ -104,7 +104,9 @@ class LanguageTrainer {
         this.backToSetupBtn.addEventListener('click', () => this.showSetupScreen());
         this.exportDataBtn.addEventListener('click', () => this.exportProgress());
         this.resetProgressBtn.addEventListener('click', () => this.resetProgress());
-        this.speakBtn.addEventListener('click', () => this.speakText());
+        if (this.speakBtn) {
+            this.speakBtn.addEventListener('click', () => this.speakText());
+        }
 
         // Progress filter
         this.progressLevelFilter.addEventListener('change', () => this.renderGrammarList());
